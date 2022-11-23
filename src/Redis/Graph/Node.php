@@ -45,7 +45,9 @@ class Node
       $props = [];
       foreach ($this->properties as $key => $val) {
         if (is_int($val) || is_double($val)) {
-          $props[] = $key . ':' . $val;
+            $props[] = $key . ':' . $val;
+        } else if (is_array($val) || is_object($val)) {
+            $props[] = $key . ':"' . trim(json_encode($val, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), '"') . '"';
         } else {
           $props[] = $key . ':"' . trim((string)$val, '"') . '"';
         }
