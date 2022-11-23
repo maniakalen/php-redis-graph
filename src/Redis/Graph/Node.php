@@ -32,30 +32,30 @@ class Node
     );
   }
 
-  public function __toString()
-  {
-    $res = '(';
-    if ($this->alias) {
-      $res .= $this->alias;
-    }
-    if ($this->label) {
-      $res .= ':' . $this->label;
-    }
-    if ($this->properties) {
-      $props = [];
-      foreach ($this->properties as $key => $val) {
-        if (is_int($val) || is_double($val)) {
-            $props[] = $key . ':' . $val;
-        } else if (is_array($val) || is_object($val)) {
-            $props[] = $key . ':"' . trim(json_encode($val, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), '"') . '"';
-        } else {
-          $props[] = $key . ':"' . trim((string)$val, '"') . '"';
+    public function __toString()
+    {
+        $res = '(';
+        if ($this->alias) {
+            $res .= $this->alias;
         }
-      }
-      $res .= '{' . implode(',', $props) . '}';
-    }
-    $res .= ')';
+        if ($this->label) {
+            $res .= ':' . $this->label;
+        }
+        if ($this->properties) {
+            $props = [];
+            foreach ($this->properties as $key => $val) {
+                if (is_int($val) || is_double($val)) {
+                    $props[] = $key . ':' . $val;
+                } else if (is_array($val) || is_object($val)) {
+                    $props[] = $key . ':"' . addslashes(json_encode($val, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) . '"';
+                } else {
+                    $props[] = $key . ':"' . trim((string)$val, '"') . '"';
+                }
+            }
+            $res .= '{' . implode(',', $props) . '}';
+        }
+        $res .= ')';
 
-    return $res;
-  }
+        return $res;
+    }
 }
